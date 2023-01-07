@@ -7,9 +7,9 @@ public class Specifications
     public static float arm_moving_speed_up = 0.6f;
     public static float arm_moving_speed_up_auto = 0.45f;
     public static float arm_moving_speed_down = 0.3f;
-    public static float servo_multiplier = 1f;
+    public static float servo_multiplier = 0.5f;
     public static float arm_rotation_speed = 0.5f;
     public static float shoudler_rotation_speed = 0.5f;
-    public static float cone_grab_speed = 0.5f;
+    public static float cone_grab_speed = 0.25f;
     public static int coneTickMedium = 640;
 }

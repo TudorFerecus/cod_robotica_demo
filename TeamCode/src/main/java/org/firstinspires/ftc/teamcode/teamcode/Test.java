@@ -15,23 +15,23 @@ public class Test extends LinearOpMode {
     private Hardware hardware;
 
 
-    private void armMovement(boolean upArm, boolean downArm)
+    private void glisMovement(float upArm, float downArm)
     {
-        if(upArm)
+        if(upArm != 0)
         {
-            hardware.mGlisRight.setPower(Specifications.arm_moving_speed_up);
-            hardware.mGlisLeft.setPower(Specifications.arm_moving_speed_up);
+            hardware.mGlisRight.setPower(upArm * Specifications.arm_moving_speed_up);
+            hardware.mGlisLeft.setPower(upArm * Specifications.arm_moving_speed_up);
         }
-        else if(downArm)
+        else if(downArm != 0)
         {
-            hardware.mGlisRight.setPower(-Specifications.arm_moving_speed_down);
-            hardware.mGlisLeft.setPower(-Specifications.arm_moving_speed_down);
+            hardware.mGlisRight.setPower(-downArm * Specifications.arm_moving_speed_down);
+            hardware.mGlisLeft.setPower(-downArm * Specifications.arm_moving_speed_down);
         }
         else
         {
 
-            hardware.mGlisRight.setPower(0.1);
-            hardware.mGlisLeft.setPower(0.1);
+            hardware.mGlisRight.setPower(0);
+            hardware.mGlisLeft.setPower(0);
         }
     }
 
@@ -43,24 +43,23 @@ public class Test extends LinearOpMode {
         }
         else if(downShoulder)
         {
-            hardware.mGlisRight.setPower(-Specifications.shoudler_rotation_speed);
-            hardware.mGlisLeft.setPower(-Specifications.shoudler_rotation_speed);
+            hardware.mShoulder.setPower(-Specifications.shoudler_rotation_speed);
         }
         else
         {
 
-            hardware.mShoulder.setPower(0.1f);
+            hardware.mShoulder.setPower(0f);
         }
     }
-    private void coneGrab(boolean grab, boolean release)
+    private void coneGrab(float grab, float release)
     {
-        if(grab)
+        if(grab != 0)
         {
-            hardware.servoHand.setPower(Specifications.cone_grab_speed);
+            hardware.servoHand.setPower(grab * Specifications.cone_grab_speed);
         }
-        else if(release)
+        else if(release != 0)
         {
-            hardware.servoHand.setPower(-Specifications.cone_grab_speed);
+            hardware.servoHand.setPower(-release * Specifications.cone_grab_speed);
         }
         else
         {
@@ -69,19 +68,19 @@ public class Test extends LinearOpMode {
     }
 
 
-    private void handMovement(float upHand, float downHand)
+    private void handMovement(boolean upHand, boolean downHand)
     {
-        if(upHand != 0)
+        if(upHand)
         {
-                hardware.servoHand.setPower(upHand * Specifications.servo_multiplier);
+                hardware.servoArm.setPower(Specifications.servo_multiplier);
         }
-        else if(downHand != 0)
+        else if(downHand)
         {
-            hardware.servoHand.setPower(-downHand * Specifications.servo_multiplier);
+            hardware.servoArm.setPower(-Specifications.servo_multiplier);
         }
         else
         {
-            hardware.servoHand.setPower(0);
+            hardware.servoArm.setPower(0);
         }
     }
 
@@ -103,22 +102,6 @@ public class Test extends LinearOpMode {
         }
     }
 
-    private void armRotation(boolean rotateLeft, boolean rotateRight)
-    {
-        if(rotateLeft)
-        {
-            hardware.mRotate.setPower(Specifications.arm_rotation_speed);
-        }
-        else if(rotateRight)
-        {
-            hardware.mRotate.setPower(-Specifications.arm_rotation_speed);
-        }
-        else
-        {
-            hardware.mRotate.setPower(0);
-        }
-    }
-
     @Override
     public void runOpMode()
     {
@@ -131,25 +114,27 @@ public class Test extends LinearOpMode {
 
         while(opModeIsActive())
         {
-            boolean upArm = gamepad1.dpad_up;
-            boolean downArm = gamepad1.dpad_down;
+            float upArm = gamepad2.left_stick_y;
+            float downArm = gamepad2.left_stick_y;
 
-            boolean grabCone = gamepad1.right_bumper;
-            boolean releaseCone = gamepad1.left_bumper;
+            boolean upShoulder = gamepad2.dpad_up;
+            boolean downShoulder = gamepad2.dpad_down;
 
-            float upHand = gamepad1.right_trigger;
-            float downHand = gamepad1.left_trigger;
+
+            float grabCone = gamepad2.right_trigger;
+            float releaseCone = gamepad2.left_trigger;
+
+            boolean rotateArmUp = gamepad2.right_bumper;
+            boolean rotateArmDown = gamepad2.left_bumper;
 
             float fata = gamepad1.left_stick_y; // forward movement
             float lateral = gamepad1.left_stick_x; // strafe movement
             float rotire = gamepad1.right_stick_x; // rotate
-            boolean rotateLeft = gamepad1.dpad_left;
-            boolean rotateRight = gamepad1.dpad_right;
 
-            armRotation(rotateLeft, rotateRight);
-            shoulderMovement(upArm, downArm);
+            shoulderMovement(upShoulder, downShoulder);
             coneGrab(grabCone, releaseCone);
-            handMovement(upHand, downHand);
+            glisMovement(upArm, downArm);
+            handMovement(rotateArmUp, rotateArmDown);
 
             movement(fata, lateral, rotire);
 
