@@ -153,20 +153,5 @@ public abstract class ScheleteAutonomie extends LinearOpMode
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
     }
 
-    protected void coneGrab(boolean grab, boolean release)
-    {
-        if(grab)
-        {
-            hardware.servoHand.setPower(Specifications.cone_grab_speed);
-        }
-        else if(release)
-        {
-            hardware.servoHand.setPower(-Specifications.cone_grab_speed);
-        }
-        else
-        {
-            hardware.servoHand.setPower(0);
-        }
-    }
 
 }

@@ -13,20 +13,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Hardware {
 
     /**
-     * @param motor[0] - right back
-     * @param motor[1] - left back
-     * @param motor[2] - right front
-     * @param motor[3] - left front
+     * @param motor[0] - right front
+     * @param motor[1] - left front
+     * @param motor[2] - right back
+     * @param motor[3] - left back
      */
     public boolean isAuto = false;
     public DcMotor[] motor = new DcMotor[4]; // motoarele rotilor
 
-    public DcMotor mGlisLeft, mGlisRight, mShoulder;
-
-    public DcMotor mRotate;
+    public DcMotor mGlisLeft, mGlisRight, m180, mScissor;
 
     // servo uri
-    public CRServo servoHand, servoArm;
+    public Servo servoClaw;
 
     // parametrii imu
     public BNO055IMU imu;
@@ -82,30 +80,29 @@ public class Hardware {
 
     private void initMotors() {
 
-        // motoare roti
-        for (int i = 0; i < motor.length; i++) {
-            String nume = "m" + Integer.toString(i);
-            motor[i] = setDefaultStateMotor(motor[i], nume, DcMotorSimple.Direction.FORWARD);
-        }
+        motor[0] = setDefaultStateMotor(motor[0], "mFrontRight", DcMotorSimple.Direction.REVERSE);
+        motor[1] = setDefaultStateMotor(motor[1], "mFrontLeft", DcMotorSimple.Direction.REVERSE);
+        motor[2] = setDefaultStateMotor(motor[2], "mBackRight", DcMotorSimple.Direction.FORWARD);
+        motor[3] = setDefaultStateMotor(motor[3], "mBackLeft", DcMotorSimple.Direction.REVERSE);
+
 
         //motor brat
-        mGlisLeft = setDefaultStateMotor(mGlisRight, "mGlisLeft", DcMotorSimple.Direction.FORWARD);
+        mGlisLeft = setDefaultStateMotor(mGlisRight, "mGlisLeft", DcMotorSimple.Direction.REVERSE);
         mGlisRight = setDefaultStateMotor(mGlisLeft, "mGlisRight", DcMotorSimple.Direction.REVERSE);
-        mShoulder = setDefaultStateMotor(mShoulder, "mShoulder", DcMotorSimple.Direction.REVERSE);
+        m180 = setDefaultStateMotor(m180, "m180", DcMotorSimple.Direction.REVERSE);
+        mScissor = setDefaultStateMotor(mScissor, "mScissor", DcMotorSimple.Direction.FORWARD);
 
-        mShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        m180.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mGlisLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mGlisRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mScissor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        mRotate = hardwareMap.get(DcMotor.class, "mRotate");
-        mRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         if(isAuto)
         {
             mGlisLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mGlisRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            mRotate.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             mGlisRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             mGlisLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
@@ -113,16 +110,16 @@ public class Hardware {
         else
         {
 
-            mRotate.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            mGlisRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            mGlisLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            mGlisRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            mGlisLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            m180.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            mScissor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
 
     }
 
     private void initServos() {
-        servoHand = hardwareMap.get(CRServo.class, "servoHand");
-        servoArm = hardwareMap.get(CRServo.class, "servoArm");
+        servoClaw = hardwareMap.get(Servo.class, "servoClaw");
     }
 }

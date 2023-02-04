@@ -20,16 +20,16 @@ public class MeepMeepTest {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(30, 52.48291908330528, Math.toRadians(180),  Math.toRadians(180), 10)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-34, -63f, Math.toRadians(90)))
-                                .forward(2)
-                                .lineToLinearHeading(new Pose2d(-60, -61, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(-60, -35, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(-53, -33, Math.toRadians(60)))
-                                .waitSeconds(1.5f)
-                                .lineToLinearHeading(new Pose2d(-63, -33, Math.toRadians(60)))
-                                .lineToLinearHeading(new Pose2d(-56.09, -12, Math.toRadians(180)))
-                                .waitSeconds(1.5f)
-                                .build()
+                                drive.trajectorySequenceBuilder(new Pose2d(-57, -20, Math.toRadians(135)))
+                                        .forward(2)
+//                                        .lineToLinearHeading(new Pose2d(-60, -61, Math.toRadians(90)))
+//                                        .lineToLinearHeading(new Pose2d(-60, -35, Math.toRadians(90)))
+//                                        .lineToLinearHeading(new Pose2d(-53, -33, Math.toRadians(60)))
+//                                        .waitSeconds(1.5f)
+//                                        .lineToLinearHeading(new Pose2d(-63, -33, Math.toRadians(60)))
+//                                        .lineToLinearHeading(new Pose2d(-56.09, -12, Math.toRadians(180)))
+//                                        .waitSeconds(1.5f)
+                                        .build()
 
                 );
 
